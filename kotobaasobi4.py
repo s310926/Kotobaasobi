@@ -50,7 +50,7 @@ gojuon_columns = [
 # 右から左に並べるために reverse
 gojuon_columns_reversed = list(reversed(gojuon_columns))
 
-st.markdown("### 国語の五十音表（右から左）")
+st.markdown("### あいうえおリスト")
 
 cols = st.columns(len(gojuon_columns_reversed))  # 11列
 
@@ -59,6 +59,13 @@ for col_idx, col_chars in enumerate(gojuon_columns_reversed):
         for row_idx, char in enumerate(col_chars):
             if char.strip() and st.button(char, key=f"btn_{char}_{col_idx}_{row_idx}"):
                 st.session_state.typed += char
+
+st.markdown("### その他ボタン")
+
+col1,col2,col3,col4 = st.columns(4)
+with col1:
+    if st.button("゛"): st.session_state.typed += "゛"
+
 
 # 入力内容を表示
 st.write("入力中：", st.session_state.typed)
