@@ -2,7 +2,7 @@
 Streamlit UIを使ったコードです。
 ・pip install streamlit
 実行は「ターミナル」で下記を打ち込みます
-python -m streamlit run "C:\\Users\\7Java15\\Desktop\\kotobaasobi\\kotobaasobi4.py"
+python -m streamlit run "C:\\kotobaasobi\\kotobaasobi4.py"
 そうすると最初は青文字でEmail：と聞いてきます。無視してリターンを押せば実行。
 その後は出てきません。
 
@@ -33,6 +33,9 @@ st.title("giminiとしりとり対決～!")
 
 st.session_state.typed = st.text_input("あなたの番（ひらがな）", value=st.session_state.typed)
 
+if st.button("けす"):
+    st.session_state.typed = st.session_state.typed[:-1]
+
 gojuon_columns = [
     ["あ", "い", "う", "え", "お"],
     ["か", "き", "く", "け", "こ"],
@@ -47,8 +50,19 @@ gojuon_columns = [
     ["",   "",  "",   "",  "ん"]
 ]
 
+gojuon_columns_sonota = [
+    ["が","ぎ","ぐ","げ","ご"],
+    ["ざ","じ","ず","ぜ","ぞ"],
+    ["だ","ぢ","づ","で","ど"],
+    ["ば","び","ぶ","べ","ぼ"],
+    ["ぱ","ぴ","ぷ","ぺ","ぽ"],
+    ["ゃ","　","ゅ","　","ょ"],
+    ["っ","　","　","　","ー"],
+]
+
 # 右から左に並べるために reverse
 gojuon_columns_reversed = list(reversed(gojuon_columns))
+gojuon_columns_sonota_reversed = list(reversed(gojuon_columns_sonota))
 
 st.markdown("### あいうえおリスト")
 
@@ -62,9 +76,14 @@ for col_idx, col_chars in enumerate(gojuon_columns_reversed):
 
 st.markdown("### その他ボタン")
 
-col1,col2,col3,col4 = st.columns(4)
-with col1:
-    if st.button("゛"): st.session_state.typed += "゛"
+cols2 = st.columns(len(gojuon_columns_sonota_reversed))
+
+for col2_idx, col2_chars in enumerate(gojuon_columns_sonota_reversed):
+    with cols[col2_idx]:
+        for row_idx, char in enumerate(col2_chars):
+            if char.strip() and st.button(char, key=f"btn_{char}_{col_idx}_{row_idx}"):
+                st.session_state.typed += char
+
 
 
 # 入力内容を表示
